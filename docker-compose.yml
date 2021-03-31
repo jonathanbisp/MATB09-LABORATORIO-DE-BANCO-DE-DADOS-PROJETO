@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:13.2-alpine
+    env_file: 
+      - .env.dev.postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - .\src\PostgreSQL:/var/lib/postgresql/data
+    networks:
+      - backend-network
+    restart: always
+  
+  pgadmin:
+    image: dpage/pgadmin4:5.1
+    env_file:
+      - .env.dev.pgadmin4
+    ports:
+      - "16543:80"
+    depends_on:
+      - postgres
+    networks:
+      - backend-network
+    restart: always
+
+  python:
+    image: python:3.7.10-buster
+    ports: 
+      - "8001:8001"
+    volumes:
+      - .\src\backend:/home/app
+    working_dir: /home/app
+    command: bash -c "pip install -r /home/app/requeriments.txt && uvicorn main:app --host 0.0.0.0 --reload --port 8001"
+    depends_on: 
+      - pgadmin
+    networks:
+      - backend-network
+      - frontend-network
+    restart: always
+
+networks:
+  backend-network:
+    driver: bridge
+  frontend-network:
+    driver: bridge
