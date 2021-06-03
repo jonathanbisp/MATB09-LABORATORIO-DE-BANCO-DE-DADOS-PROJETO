@@ -17,6 +17,7 @@ CREATE TABLE veiculo(
     numchassi character varying(17) COLLATE pg_catalog."pt-BR-x-icu" NOT NULL,
     modelo character varying(255) COLLATE pg_catalog."pt-BR-x-icu",
     anofabricacao date,
+    imglink character varying(255) COLLATE pg_catalog."pt-BR-x-icu",
     CONSTRAINT veiculo_pkey PRIMARY KEY (revavam, numchassi)
 );
 CREATE TABLE aluga(
