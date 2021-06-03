@@ -4,6 +4,8 @@ from webapp.services.queriesClient import criarCliente, obterClientePeloNome, ob
 from webapp.models.Cliente import Cliente, Nome, CPF, Email
 from webapp.services.queriesVeiculo import criarVeiculo, obterVeiculoRevavam, obterVeiculoNumchassi, obterVeiculoModelo
 from webapp.models.Veiculo import Veiculo, Revavam, Numchassi, Modelo
+from webapp.services.queriesFuncionario import criarFuncionario, obterFuncionarioPeloNome, obterFuncionarioPeloCPF, obterFuncionarioPeloEmail
+from webapp.models.Funcionario import Funcionario, Nome, CPF, Email
 
 
 
@@ -30,11 +32,11 @@ def getClientByPartOfName(cpf: CPF):
 def getClientByPartOfName(email: Email):
     return obterClientePeloEmail(email.dict())
 
+
+
 @app.post("/criarVeiculo")
 def createVeiculo(veiculo: Veiculo):
     return criarVeiculo(veiculo.dict())
-
-
 
 @app.get("/buscarVeiculo/revavam")
 def getVeiculoByRevavam(revavam: Revavam):
@@ -47,3 +49,21 @@ def getVeiculoByNumChassi(numchassi: Numchassi):
 @app.get("/buscarVeiculo/modelo")
 def getVeiculoByModelo(modelo: Modelo):
     return obterVeiculoModelo(modelo.dict())
+
+
+
+@app.post("/criarFuncionario")
+def createFuncionario(funcionario: Funcionario):
+    return criarFuncionario(funcionario.dict())
+
+@app.get("/buscarFuncionario/nome")
+def getFuncionarioByPartOfName(nome: Nome):
+    return obterFuncionarioPeloNome(nome.dict())
+
+@app.get("/buscarFuncionario/cpf")
+def getFuncionarioByPartOfName(cpf: CPF):
+    return obterFuncionarioPeloCPF(cpf.dict())
+
+@app.get("/buscarCliente/email")
+def getClientByPartOfName(email: Email):
+    return obterFuncionarioPeloEmail(email.dict())
