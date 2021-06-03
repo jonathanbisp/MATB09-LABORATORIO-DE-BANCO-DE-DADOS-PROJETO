@@ -10,16 +10,12 @@ def criarFuncionario(funcionarioInfos):
     try:
         cpf = validCPF(funcionarioInfos['cpf'])
         codigo=funcionarioInfos['codigo']
-        pnome = notNull(funcionarioInfos['pnome'])
-        unome = notNull(funcionarioInfos['unome'])
         anonasc = validNasciment(funcionarioInfos['anonasc'])
         cargo=funcionarioInfos['cargo']
         nomecompleto = funcionarioInfos['nomecompleto']
         email = validEmail(funcionarioInfos['email'])
         senha = notNull(funcionarioInfos['senha'])
-        fk_cpf_supervisor= funcionarioInfos['fk_cpf_supervisor']
         fk_codigo_supervisor= funcionarioInfos['fk_codigo_supervisor']
-        fk_cliente_cpf= funcionarioInfos['fk_cliente_cpf']
 
         try:
             imglink = funcionarioInfos['imglink']
@@ -30,9 +26,12 @@ def criarFuncionario(funcionarioInfos):
     conn = psycopg2.connect(database="Locadora", user="postgres", password="B4T@TaC0mF31JãO", host="postgres")
     cur = conn.cursor()
     try:
-        cur.execute(getSqlScript('insert/insertFuncionario'), (cpf,codigo,pnome,unome,anonasc,cargo,nomecompleto,email,senha,imglink,fk_cpf_supervisor,fk_codigo_supervisor,fk_cliente_cpf))
+        if len(fk_codigo_supervisor)!=0:
+            cur.execute(getSqlScript('insert/insertFuncionario'), (cpf,codigo,nomecompleto,anonasc,cargo,email,senha,imglink,fk_codigo_supervisor))
+        else:
+            cur.execute(getSqlScript('insert/insertFuncionario'), (cpf,codigo,nomecompleto,anonasc,cargo,email,senha,imglink,None))
     except UniqueViolation:
-            raise HTTPException(status_code=409, detail='E-mail ou CPF já cadastrado')
+            raise HTTPException(status_code=409, detail='Codigo ou CPF já cadastrado')
     conn.commit()
     cur.close()
     conn.close()

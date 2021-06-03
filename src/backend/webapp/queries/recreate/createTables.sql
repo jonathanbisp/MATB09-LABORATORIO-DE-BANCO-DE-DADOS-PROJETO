@@ -32,6 +32,7 @@ CREATE TABLE funcionario(
     fk_codigo_supervisor integer,
     CONSTRAINT funcionario_pkey PRIMARY KEY (cpf, codigo),
     UNIQUE(codigo),
+    UNIQUE(cpf),
     CONSTRAINT fk_funcionario_2 FOREIGN KEY (fk_codigo_supervisor)
         REFERENCES funcionario (codigo) MATCH SIMPLE
         ON UPDATE NO ACTION
