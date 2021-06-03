@@ -1,0 +1,1 @@
+SELECT cpf, nomecompleto, pnome, unome, email FROM cliente WHERE UPPER(nomecompleto) LIKE UPPER('%%s%')
