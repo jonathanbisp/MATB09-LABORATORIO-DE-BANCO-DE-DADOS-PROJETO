@@ -1,0 +1,1 @@
+SELECT cpf, nomecompleto, pnome, unome, email FROM funcionario WHERE UPPER(nomecompleto) LIKE UPPER('%%s%')
