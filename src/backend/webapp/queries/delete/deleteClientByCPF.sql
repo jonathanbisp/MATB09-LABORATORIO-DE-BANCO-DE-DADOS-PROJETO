@@ -1,0 +1,1 @@
+DELETE from cliente WHERE cpf LIKE '%s';

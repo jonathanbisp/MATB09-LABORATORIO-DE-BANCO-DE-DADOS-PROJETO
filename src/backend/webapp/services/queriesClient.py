@@ -10,8 +10,6 @@ def criarCliente(userInfos):
     try:
         cpf = validCPF(userInfos['cpf'])
         nomecompleto = userInfos['nomecompleto']
-        pnome = notNull(userInfos['pnome'])
-        unome = notNull(userInfos['unome'])
         anonasc = validNasciment(userInfos['anonasc'])
         telpessoal = validTelefoneBrasileiro(userInfos['telpessoal'])
         email = validEmail(userInfos['email'])
@@ -85,3 +83,19 @@ def obterClientePeloEmail(clientEmail):
     cur.close()
     conn.close()
     return data
+
+
+def apagarClientePeloCPF(clientCPF):
+    try:
+        cpf = notNull(clientCPF['cpf'])
+    except Exception as e:
+        raise e
+    
+    conn = psycopg2.connect(database="Locadora", user="postgres", password="B4T@TaC0mF31JãO", host="postgres")
+    cur = conn.cursor(cursor_factory=RealDictCursor)
+    cur.execute(getSqlScript('delete/deleteClientByCPF').replace('%s', cpf))
+    
+    conn.commit()
+    cur.close()
+    conn.close()
+    return 'Apagado com sucesso'

@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 from webapp.services.queriesManager import recreateDatabase
-from webapp.services.queriesClient import criarCliente, obterClientePeloNome, obterClientePeloCPF, obterClientePeloEmail
+from webapp.services.queriesClient import criarCliente, obterClientePeloNome, obterClientePeloCPF,\
+     obterClientePeloEmail, apagarClientePeloCPF #, atualizarClienteByCPF
 from webapp.models.Cliente import Cliente, Nome, CPF, Email
 from webapp.services.queriesVeiculo import criarVeiculo, obterVeiculoRevavam, obterVeiculoNumchassi, obterVeiculoModelo
 from webapp.models.Veiculo import Veiculo, Revavam, Numchassi, Modelo
-
 
 
 app = FastAPI()
@@ -30,11 +30,19 @@ def getClientByPartOfName(cpf: CPF):
 def getClientByPartOfName(email: Email):
     return obterClientePeloEmail(email.dict())
 
+@app.delete("/apagarCliente/cpf")
+def deleteClientByCPF(cpf: CPF):
+    return apagarClientePeloCPF(cpf.dict())
+
+# permite atualizar tudo menos o proprio cpf
+@app.patch('/atualizarCliente/cpf')
+def updateClientByCPF(cliente: Cliente):
+    return atualizarClienteByCPF(cliente.dict())
+
+
 @app.post("/criarVeiculo")
 def createVeiculo(veiculo: Veiculo):
     return criarVeiculo(veiculo.dict())
-
-
 
 @app.get("/buscarVeiculo/revavam")
 def getVeiculoByRevavam(revavam: Revavam):
@@ -42,7 +50,7 @@ def getVeiculoByRevavam(revavam: Revavam):
 
 @app.get("/buscarveiculo/numchassi")
 def getVeiculoByNumChassi(numchassi: Numchassi):
-    return obterVeiculoNumchassi(cpf.dict())
+    return obterVeiculoNumchassi(numchassi.dict())
 
 @app.get("/buscarVeiculo/modelo")
 def getVeiculoByModelo(modelo: Modelo):
