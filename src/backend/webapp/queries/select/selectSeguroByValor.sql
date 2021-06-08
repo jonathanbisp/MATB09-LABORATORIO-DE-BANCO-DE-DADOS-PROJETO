@@ -1,0 +1,1 @@
+SELECT * FROM seguro WHERE UPPER(valor) LIKE UPPER('%s')

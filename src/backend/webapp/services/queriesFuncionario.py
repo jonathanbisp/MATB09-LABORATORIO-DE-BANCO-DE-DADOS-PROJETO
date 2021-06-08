@@ -87,3 +87,18 @@ def obterFuncionarioPeloEmail(funcionarioEmail):
     cur.close()
     conn.close()
     return data
+
+def apagarFuncionarioPeloCPF(FuncionarioCPF):
+    try:
+        cpf = notNull(FuncionarioCPF['cpf'])
+    except Exception as e:
+        raise e
+    
+    conn = psycopg2.connect(database="Locadora", user="postgres", password="B4T@TaC0mF31JãO", host="postgres")
+    cur = conn.cursor(cursor_factory=RealDictCursor)
+    cur.execute(getSqlScript('delete/deleteFuncionarioByCPF').replace('%s', cpf))
+    
+    conn.commit()
+    cur.close()
+    conn.close()
+    return 'Apagado com sucesso'

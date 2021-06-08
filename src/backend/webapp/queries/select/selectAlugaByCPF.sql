@@ -1,0 +1,1 @@
+SELECT * FROM aluga WHERE UPPER(fk_cliente_cpf) LIKE UPPER('%s')

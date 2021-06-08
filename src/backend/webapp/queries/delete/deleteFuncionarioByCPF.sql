@@ -1,0 +1,1 @@
+DELETE from funcionario WHERE cpf LIKE '%s';
