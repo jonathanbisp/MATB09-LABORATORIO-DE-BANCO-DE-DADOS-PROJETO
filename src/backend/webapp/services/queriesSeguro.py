@@ -14,11 +14,12 @@ def criarSeguro(seguroInfos):
         nome = seguroInfos['nome']
         fk_veiculo_revavam=seguroInfos['fk_veiculo_revavam']
         fk_veiculo_numchassi= seguroInfos['fk_veiculo_numchassi']
-
+    except Exception as e:
+        raise e
     conn = psycopg2.connect(database="Locadora", user="postgres", password="B4T@TaC0mF31JãO", host="postgres")
     cur = conn.cursor()
     try:
-        cur.execute(getSqlScript('insert/insertFuncionario'), (codigo,nome,descricao,valor,fk_veiculo_revavam,fk_veiculo_numchassi))
+        cur.execute(getSqlScript('insert/insertSeguro'), (codigo,nome,descricao,valor,fk_veiculo_revavam,fk_veiculo_numchassi))
     except UniqueViolation:
         raise HTTPException(status_code=409, detail='Codigo ou CPF já cadastrado')
     conn.commit()
