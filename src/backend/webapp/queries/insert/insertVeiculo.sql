@@ -1,1 +1,1 @@
-INSERT INTO veiculo (revavam,numchassi,modelo,anofabricacao,imglink)VALUES(%s,%s,%s,%s,%s)
+INSERT INTO veiculo (renavam,numchassi,modelo,anofabricacao,imglink)VALUES(%s,%s,%s,%s,%s)

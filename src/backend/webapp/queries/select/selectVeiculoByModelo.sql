@@ -1,1 +1,1 @@
-SELECT revavam, numchassi, modelo FROM veiculo WHERE UPPER(modelo) LIKE UPPER('%%s%')
+SELECT renavam, numchassi, modelo, imglink FROM veiculo WHERE UPPER(modelo) LIKE UPPER('%%s%')

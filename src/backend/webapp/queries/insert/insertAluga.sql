@@ -1,5 +1,5 @@
 INSERT INTO aluga (fk_cliente_cpf,
-                    fk_veiculo_revavam,
+                    fk_veiculo_renavam,
                     fk_veiculo_numchassi,
                     fk_funcionario_codigo,
                     fk_seguro_codigo,

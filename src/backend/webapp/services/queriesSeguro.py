@@ -1,27 +1,26 @@
 import psycopg2
 from psycopg2.errors import UniqueViolation
 from webapp.services.utils import getSqlScript
-from webapp.services.utils import validCPF, validvalor, validNasciment, notNull, validTelefoneBrasileiro
+from webapp.services.utils import notNull
 from fastapi import HTTPException
 from psycopg2.extras import RealDictCursor
 
 
 def criarSeguro(seguroInfos):
     try:
-        codigo=seguroInfos['codigo']
         valor=seguroInfos['valor']
         descricao=seguroInfos['descricao']
         nome = seguroInfos['nome']
-        fk_veiculo_revavam=seguroInfos['fk_veiculo_revavam']
+        fk_veiculo_renavam=seguroInfos['fk_veiculo_renavam']
         fk_veiculo_numchassi= seguroInfos['fk_veiculo_numchassi']
     except Exception as e:
         raise e
     conn = psycopg2.connect(database="Locadora", user="postgres", password="B4T@TaC0mF31JãO", host="postgres")
     cur = conn.cursor()
     try:
-        cur.execute(getSqlScript('insert/insertSeguro'), (codigo,nome,descricao,valor,fk_veiculo_revavam,fk_veiculo_numchassi))
+        cur.execute(getSqlScript('insert/insertSeguro'), (nome,descricao,valor,fk_veiculo_renavam,fk_veiculo_numchassi))
     except UniqueViolation:
-        raise HTTPException(status_code=409, detail='Codigo ou CPF já cadastrado')
+        raise HTTPException(status_code=409, detail='Codigo já cadastrado')
     conn.commit()
     cur.close()
     conn.close()
@@ -37,8 +36,8 @@ def obterSeguroPeloNome(seguroNome):
 
     conn = psycopg2.connect(database="Locadora", user="postgres", password="B4T@TaC0mF31JãO", host="postgres")
     cur = conn.cursor(cursor_factory=RealDictCursor)
-    cur.execute(getSqlScript('select/selectSeguroByName').replace('%s', nome))
-    
+    cur.execute(getSqlScript('select/selectSeguroByNome').replace('%s', nome))
+    print(getSqlScript('select/selectSeguroByNome').replace('%s', nome))
     data = cur.fetchall()
     
     cur.close()
@@ -47,7 +46,7 @@ def obterSeguroPeloNome(seguroNome):
     return data
 
 
-def obterSeguroPeloCodifo(seguroCodigo):
+def obterSeguroPeloCodigo(seguroCodigo):
     try:
         codigo = notNull(seguroCodigo['codigo'])
     except Exception as e:

@@ -1,5 +1,5 @@
 import psycopg2
-from psycopg2.errors import UniqueViolation
+from psycopg2.errors import UniqueViolation, ForeignKeyViolation
 from webapp.services.utils import getSqlScript
 from webapp.services.utils import validCPF, validEmail, validNasciment, notNull, validTelefoneBrasileiro
 from fastapi import HTTPException
@@ -9,14 +9,12 @@ from psycopg2.extras import RealDictCursor
 def criarFuncionario(funcionarioInfos):
     try:
         cpf = validCPF(funcionarioInfos['cpf'])
-        codigo=funcionarioInfos['codigo']
         anonasc = validNasciment(funcionarioInfos['anonasc'])
         cargo=funcionarioInfos['cargo']
         nomecompleto = funcionarioInfos['nomecompleto']
         email = validEmail(funcionarioInfos['email'])
         senha = notNull(funcionarioInfos['senha'])
-        fk_codigo_supervisor= funcionarioInfos['fk_codigo_supervisor']
-
+        fk_codigo_supervisor = funcionarioInfos['fk_codigo_supervisor']
         try:
             imglink = funcionarioInfos['imglink']
         except HTTPException as e:
@@ -26,12 +24,11 @@ def criarFuncionario(funcionarioInfos):
     conn = psycopg2.connect(database="Locadora", user="postgres", password="B4T@TaC0mF31JãO", host="postgres")
     cur = conn.cursor()
     try:
-        if len(fk_codigo_supervisor)!=0:
-            cur.execute(getSqlScript('insert/insertFuncionario'), (cpf,codigo,nomecompleto,anonasc,cargo,email,senha,imglink,fk_codigo_supervisor))
-        else:
-            cur.execute(getSqlScript('insert/insertFuncionario'), (cpf,codigo,nomecompleto,anonasc,cargo,email,senha,imglink,None))
+        cur.execute(getSqlScript('insert/insertFuncionario'), (cpf,nomecompleto,anonasc,cargo,email,senha,imglink,fk_codigo_supervisor))
     except UniqueViolation:
-            raise HTTPException(status_code=409, detail='Codigo ou CPF já cadastrado')
+        raise HTTPException(status_code=409, detail='Codigo ou CPF já cadastrado')
+    except ForeignKeyViolation:
+        raise HTTPException(status_code=409, detail='Supervisor cadastrado não existe')
     conn.commit()
     cur.close()
     conn.close()

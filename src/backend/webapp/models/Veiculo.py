@@ -4,15 +4,15 @@ from pydantic import BaseModel
 
 
 class Veiculo(BaseModel):
-    revavam: str
+    renavam: str
     numchassi: str
     modelo: str
     anofabricacao: str
     imglink: Optional[str] = None
 
 
-class Revavam(BaseModel):
-    revavam: str
+class Renavam(BaseModel):
+    renavam: str
 
 
 class Modelo(BaseModel):

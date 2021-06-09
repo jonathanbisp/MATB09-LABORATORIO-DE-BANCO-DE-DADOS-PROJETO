@@ -1,16 +1,16 @@
 from fastapi import FastAPI
 from webapp.services.queriesManager import recreateDatabase
 from webapp.services.queriesClient import criarCliente, obterClientePeloNome, obterClientePeloCPF,\
-     obterClientePeloEmail, apagarClientePeloCPF #, atualizarClienteByCPF
+     obterClientePeloEmail, apagarClientePeloCPF
 from webapp.models.Cliente import Cliente, Nome, CPF, Email
-from webapp.services.queriesVeiculo import criarVeiculo, obterVeiculoRevavam, obterVeiculoNumchassi, obterVeiculoModelo
-from webapp.models.Veiculo import Veiculo, Revavam, Numchassi, Modelo
-from webapp.services.queriesFuncionario import criarFuncionario, obterFuncionarioPeloNome, obterFuncionarioPeloCPF, obterFuncionarioPeloEmail
+from webapp.services.queriesVeiculo import criarVeiculo, obterVeiculoRenavam, obterVeiculoNumchassi, obterVeiculoModelo
+from webapp.models.Veiculo import Veiculo, Renavam, Numchassi, Modelo
+from webapp.services.queriesFuncionario import criarFuncionario, obterFuncionarioPeloNome, obterFuncionarioPeloCPF, obterFuncionarioPeloEmail, apagarFuncionarioPeloCPF
 from webapp.models.Funcionario import Funcionario, Nome, CPF, Email
-from webapp.services.queriesSeguro import criarSeguro,obterSeguroPeloNome,obterSeguroPeloCodigo,obterSeguroPeloValor
+from webapp.services.queriesSeguro import criarSeguro, obterSeguroPeloNome, obterSeguroPeloCodigo, obterSeguroPeloValor
 from webapp.models.Seguro import Seguro, Nome,Valor, Codigo
-from webapp.services.queriesAluga import criarAluga,obterAlugaCPF,obterAlugaNumchassi,obterAlugaRevavam
-from webapp.models.Aluga import Aluga,fk_cliente_cpf,fk_veiculo_revavam,fk_veiculo_numchassi
+from webapp.services.queriesAluga import criarAluga,obterAlugaCPF,obterAlugaNumchassi,obterAlugaRenavam
+from webapp.models.Aluga import Aluga,fk_cliente_cpf,fk_veiculo_renavam,fk_veiculo_numchassi
 
 
 app = FastAPI()
@@ -19,6 +19,7 @@ app = FastAPI()
 def home():
     return recreateDatabase()
 
+#####################################################################
 
 @app.post("/criarCliente")
 def createUser(cliente: Cliente):
@@ -40,16 +41,17 @@ def getClientByPartOfName(email: Email):
 def deleteClientByCPF(cpf: CPF):
     return apagarClientePeloCPF(cpf.dict())
 
+#####################################################################
 
 @app.post("/criarVeiculo")
 def createVeiculo(veiculo: Veiculo):
     return criarVeiculo(veiculo.dict())
 
-@app.get("/buscarVeiculo/revavam")
-def getVeiculoByRevavam(revavam: Revavam):
-    return obterVeiculoRevavam(revavam.dict())
+@app.get("/buscarVeiculo/renavam")
+def getVeiculoByRenavam(renavam: Renavam):
+    return obterVeiculoRenavam(renavam.dict())
 
-@app.get("/buscarveiculo/numchassi")
+@app.get("/buscarVeiculo/numchassi")
 def getVeiculoByNumChassi(numchassi: Numchassi):
     return obterVeiculoNumchassi(numchassi.dict())
 
@@ -57,7 +59,7 @@ def getVeiculoByNumChassi(numchassi: Numchassi):
 def getVeiculoByModelo(modelo: Modelo):
     return obterVeiculoModelo(modelo.dict())
 
-
+#####################################################################
 
 @app.post("/criarFuncionario")
 def createFuncionario(funcionario: Funcionario):
@@ -79,6 +81,7 @@ def getFuncionarioByPartOfEmail(email: Email):
 def deleteFuncionarioByCPF(cpf: CPF):
     return apagarFuncionarioPeloCPF(cpf.dict())
 
+#####################################################################
 
 @app.post("/criarSeguro")
 def createSeguro(seguro: Seguro):
@@ -96,19 +99,20 @@ def getSeguroByPartOfCodigo(codigo: Codigo):
 def getSeguroByPartOfValor(valor: Valor):
     return obterSeguroPeloValor(valor.dict())
 
+#####################################################################
 
 @app.post("/criarAluga")
 def createAluga(aluga: Aluga):
     return criarAluga(aluga.dict())
 
-@app.get("/buscarAluga/revavam")
-def getAlugaByRevavam(fk_veiculo_revavam: fk_veiculo_revavam):
-    return obterAlugaRevavam(fk_veiculo_revavam.dict())
-
-@app.get("/buscarveiculo/numchassi")
-def getAlugaByNumChassi(fk_veiculo_numchassi: fk_veiculo_numchassi):
-    return obterAlugaNumchassi(fk_veiculo_numchassi.dict())
-
 @app.get("/buscarAluga/cpf")
 def getAlugaByCPF(fk_cliente_cpf: fk_cliente_cpf):
-    return obterVeiculoModelo(fk_cliente_cpf.dict())
+    return obterAlugaCPF(fk_cliente_cpf.dict())
+
+@app.get("/buscarAluga/chassi")
+def getAlugaByCPF(fk_veiculo_numchassi: fk_veiculo_numchassi):
+    return obterAlugaNumchassi(fk_veiculo_numchassi.dict())
+
+@app.get("/buscarAluga/renavam")
+def getAlugaByCPF(fk_veiculo_renavam: fk_veiculo_renavam):
+    return obterAlugaRenavam(fk_veiculo_renavam.dict())

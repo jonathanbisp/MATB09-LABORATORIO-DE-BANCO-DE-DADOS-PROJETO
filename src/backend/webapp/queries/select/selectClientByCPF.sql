@@ -1,1 +1,1 @@
-SELECT cpf, nomecompleto, email FROM cliente WHERE UPPER(cpf) LIKE UPPER('%s')
+SELECT cpf, nomecompleto, email, imglink  FROM cliente WHERE UPPER(cpf) LIKE UPPER('%s')

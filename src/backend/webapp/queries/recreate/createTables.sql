@@ -11,13 +11,13 @@ CREATE TABLE cliente(
         UNIQUE(email)
 );
 CREATE TABLE veiculo(
-    revavam character varying(11) COLLATE pg_catalog."pt-BR-x-icu" NOT NULL,
+    renavam character varying(11) COLLATE pg_catalog."pt-BR-x-icu" NOT NULL,
     numchassi character varying(17) COLLATE pg_catalog."pt-BR-x-icu" NOT NULL,
     modelo character varying(255) COLLATE pg_catalog."pt-BR-x-icu" NOT NULL,
     anofabricacao date NOT NULL,
     imglink character varying(255) COLLATE pg_catalog."pt-BR-x-icu",
-        CONSTRAINT veiculo_pkey PRIMARY KEY (revavam, numchassi),
-        UNIQUE(revavam),
+        CONSTRAINT veiculo_pkey PRIMARY KEY (renavam, numchassi),
+        UNIQUE(renavam),
         UNIQUE(numchassi)
 );
 CREATE TABLE funcionario(
@@ -43,17 +43,17 @@ CREATE TABLE seguro(
     nome character varying(255) COLLATE pg_catalog."pt-BR-x-icu" NOT NULL,
     descricao text COLLATE pg_catalog."pt-BR-x-icu",
     valor real NOT NULL,
-    fk_veiculo_revavam character varying(11) COLLATE pg_catalog."pt-BR-x-icu" NOT NULL,
+    fk_veiculo_renavam character varying(11) COLLATE pg_catalog."pt-BR-x-icu" NOT NULL,
     fk_veiculo_numchassi character varying(17) COLLATE pg_catalog."pt-BR-x-icu" NOT NULL,
     CONSTRAINT seguro_pkey PRIMARY KEY (codigo),
-    CONSTRAINT fk_seguro_2 FOREIGN KEY (fk_veiculo_numchassi, fk_veiculo_revavam)
-        REFERENCES veiculo (numchassi, revavam) MATCH SIMPLE
+    CONSTRAINT fk_seguro_2 FOREIGN KEY (fk_veiculo_numchassi, fk_veiculo_renavam)
+        REFERENCES veiculo (numchassi, renavam) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE RESTRICT
 );
 CREATE TABLE aluga(
     fk_cliente_cpf character varying(11) COLLATE pg_catalog."pt-BR-x-icu" NOT NULL,
-    fk_veiculo_revavam character varying(11) COLLATE pg_catalog."pt-BR-x-icu" NOT NULL,
+    fk_veiculo_renavam character varying(11) COLLATE pg_catalog."pt-BR-x-icu" NOT NULL,
     fk_veiculo_numchassi character varying(17) COLLATE pg_catalog."pt-BR-x-icu" NOT NULL,
     fk_funcionario_codigo integer NOT NULL,
     fk_seguro_codigo integer,
@@ -63,14 +63,14 @@ CREATE TABLE aluga(
     valor real NOT NULL,
     parcelas integer NOT NULL,
     parcelaspagas integer NOT NULL,
-    CONSTRAINT aluga_pkey PRIMARY KEY (fk_cliente_cpf, fk_veiculo_revavam, fk_veiculo_numchassi, fk_funcionario_codigo, datalocacao),
+    CONSTRAINT aluga_pkey PRIMARY KEY (fk_cliente_cpf, fk_veiculo_renavam, fk_veiculo_numchassi, fk_funcionario_codigo, datalocacao),
     CONSTRAINT fk_aluga_2 FOREIGN KEY (fk_cliente_cpf)
         REFERENCES cliente (cpf) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE RESTRICT,
 
-    CONSTRAINT fk_aluga_3 FOREIGN KEY (fk_veiculo_numchassi, fk_veiculo_revavam)
-        REFERENCES veiculo (numchassi, revavam) MATCH SIMPLE
+    CONSTRAINT fk_aluga_3 FOREIGN KEY (fk_veiculo_numchassi, fk_veiculo_renavam)
+        REFERENCES veiculo (numchassi, renavam) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE RESTRICT,
 

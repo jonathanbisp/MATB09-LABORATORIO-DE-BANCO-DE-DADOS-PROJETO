@@ -1,0 +1,1 @@
+SELECT renavam,numchassi,modelo,imglink FROM veiculo WHERE UPPER(renavam) LIKE UPPER('%s')

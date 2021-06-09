@@ -25,7 +25,7 @@ def criarCliente(userInfos):
     conn = psycopg2.connect(database="Locadora", user="postgres", password="B4T@TaC0mF31JãO", host="postgres")
     cur = conn.cursor()
     try:
-        cur.execute(getSqlScript('insert/insertCliente'), (cpf, nomecompleto, pnome, unome, anonasc, telcomercial, telpessoal, email, senha, imglink))
+        cur.execute(getSqlScript('insert/insertCliente'), (cpf, nomecompleto, anonasc, telcomercial, telpessoal, email, senha, imglink))
     except UniqueViolation:
             raise HTTPException(status_code=409, detail='E-mail ou CPF já cadastrado')
     conn.commit()
@@ -91,11 +91,13 @@ def apagarClientePeloCPF(clientCPF):
     except Exception as e:
         raise e
     
-    conn = psycopg2.connect(database="Locadora", user="postgres", password="B4T@TaC0mF31JãO", host="postgres")
-    cur = conn.cursor(cursor_factory=RealDictCursor)
-    cur.execute(getSqlScript('delete/deleteClientByCPF').replace('%s', cpf))
-    
-    conn.commit()
-    cur.close()
-    conn.close()
-    return 'Apagado com sucesso'
+    if(obterClientePeloCPF(clientCPF) != None):
+        conn = psycopg2.connect(database="Locadora", user="postgres", password="B4T@TaC0mF31JãO", host="postgres")
+        cur = conn.cursor(cursor_factory=RealDictCursor)
+        cur.execute(getSqlScript('delete/deleteClientByCPF').replace('%s', cpf))
+        
+        conn.commit()
+        cur.close()
+        conn.close()
+        return 'Apagado com sucesso'
+    return 'CPF não cadastrado'

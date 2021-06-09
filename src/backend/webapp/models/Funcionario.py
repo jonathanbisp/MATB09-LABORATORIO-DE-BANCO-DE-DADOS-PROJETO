@@ -4,14 +4,13 @@ from pydantic import BaseModel
 
 class Funcionario(BaseModel):
     cpf: str
-    codigo: str
     nomecompleto: str  
     anonasc: str
     cargo: str
     email: str
     senha: str
     imglink: Optional[str] = None
-    fk_codigo_supervisor: str
+    fk_codigo_supervisor: Optional[int] = None
 
 
 
