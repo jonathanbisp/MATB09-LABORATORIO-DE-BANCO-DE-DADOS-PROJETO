@@ -1,1 +1,1 @@
-SELECT cpf,codigo, nomecompleto,  email FROM funcionario WHERE UPPER(cpf) LIKE UPPER('%s')
+SELECT cpf, nomecompleto, pnome, unome, email FROM funcionario WHERE UPPER(cpf) LIKE UPPER('%s')
