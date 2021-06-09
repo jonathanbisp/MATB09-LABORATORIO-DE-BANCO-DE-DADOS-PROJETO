@@ -29,7 +29,6 @@ def criarFuncionario(funcionarioInfos):
         raise HTTPException(status_code=409, detail='Codigo ou CPF já cadastrado')
     except ForeignKeyViolation:
         raise HTTPException(status_code=409, detail='Supervisor cadastrado não existe')
-    conn.commit()
     cur.close()
     conn.close()
 

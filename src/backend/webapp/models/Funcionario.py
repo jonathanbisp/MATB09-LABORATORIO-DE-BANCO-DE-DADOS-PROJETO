@@ -7,11 +7,11 @@ class Funcionario(BaseModel):
     nomecompleto: str  
     anonasc: str
     cargo: str
+    nomecompleto: str
     email: str
     senha: str
     imglink: Optional[str] = None
     fk_codigo_supervisor: Optional[int] = None
-
 
 
 class Nome(BaseModel):
